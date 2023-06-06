@@ -20,6 +20,12 @@ class ApplicationController < Sinatra::Base
     })
   end
 
+  delete '/gardeners/:id' do
+    gardener = Gardener.find(params[:id])
+    gardener.destroy
+    gardener.to_json
+  end
+
   post '/gardeners' do
     gardener = Gardener.create(
       name: params[:name]
