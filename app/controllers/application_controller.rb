@@ -15,7 +15,9 @@ class ApplicationController < Sinatra::Base
 
   get "/gardeners/:id" do
     gardener = Gardener.find(params[:id])
-    gardener.to_json
+    gardener.to_json(include: {
+      gardens: {include: :plants}
+    })
   end
 
   post '/gardeners' do
