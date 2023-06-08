@@ -16,13 +16,21 @@ class ApplicationController < Sinatra::Base
   get "/gardeners/:id" do
     gardener = Gardener.find(params[:id])
     gardener.to_json(include: {
-      gardens: {include: :plants}
+      gardens: {include: [:plants, :gardener]}
     })
   end
 
   delete '/gardeners/:id' do
     gardener = Gardener.find(params[:id])
     gardener.destroy
+    gardener.to_json
+  end
+
+  patch '/gardeners/:id' do
+    gardener = Gardener.find(params[:id])
+    gardener.update(
+      name: params[:name]
+    )
     gardener.to_json
   end
 
@@ -35,12 +43,12 @@ class ApplicationController < Sinatra::Base
 
   get "/gardens" do
     gardens = Garden.all
-    gardens.to_json(include: :gardener)
+    gardens.to_json(include: [:gardener, :plants])
   end
 
   get "/gardens/:id" do
     gardens = Garden.find(params[:id])
-    gardens.to_json
+    gardens.to_json(include: [:plants, :gardener])
   end
 
   get "/plants" do
