@@ -46,6 +46,17 @@ class ApplicationController < Sinatra::Base
     gardens.to_json(include: [:gardener, :plants])
   end
 
+  post '/gardens' do
+    garden = Garden.create(
+      name: params[:name],
+      indoor_outdoor: params[:location],
+      sunlight: params[:sunlight],
+      rain: params[:rain],
+      gardener_id: params[:gardenerId]
+    )
+    garden.to_json
+  end
+
   get "/gardens/:id" do
     gardens = Garden.find(params[:id])
     gardens.to_json(include: [:plants, :gardener])
@@ -54,6 +65,12 @@ class ApplicationController < Sinatra::Base
   get "/plants" do
     plants = Plant.all
     plants.to_json
+  end
+
+  delete '/plants/:id' do
+    plant = Plant.find(params[:id])
+    plant.destroy
+    plant.to_json
   end
 
 end
