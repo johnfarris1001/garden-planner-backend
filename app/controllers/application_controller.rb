@@ -82,4 +82,13 @@ class ApplicationController < Sinatra::Base
     plant.to_json
   end
 
+  post '/plants' do
+    plant = Plant.create(
+      name: params[:name],
+      variety: params[:variety],
+      garden_id: params[:gardenId]
+    )
+    plant.to_json
+  end
+
 end
