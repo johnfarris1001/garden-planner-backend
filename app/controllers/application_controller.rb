@@ -79,7 +79,7 @@ class ApplicationController < Sinatra::Base
       name: params[:name],
       variety: params[:variety]
     )
-    gardener.to_json
+    plant.to_json
   end
 
 end
