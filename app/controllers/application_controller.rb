@@ -73,6 +73,12 @@ class ApplicationController < Sinatra::Base
     garden.to_json
   end
 
+  delete '/gardens/:id' do
+    garden = Garden.find(params[:id])
+    garden.destroy
+    garden.to_json
+  end
+
   get "/plants" do
     plants = Plant.all
     plants.to_json
