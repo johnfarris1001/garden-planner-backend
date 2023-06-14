@@ -62,6 +62,17 @@ class ApplicationController < Sinatra::Base
     gardens.to_json(include: [:plants, :gardener])
   end
 
+  patch '/gardens/:id' do
+    garden = Garden.find(params[:id])
+    garden.update(
+      name: params[:name],
+      indoor_outdoor: params[:location],
+      sunlight: params[:sunlight],
+      rain: params[:rain]
+    )
+    garden.to_json
+  end
+
   get "/plants" do
     plants = Plant.all
     plants.to_json
