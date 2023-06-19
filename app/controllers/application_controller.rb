@@ -2,14 +2,11 @@ class ApplicationController < Sinatra::Base
   set :default_content_type, 'application/json'
   
   # Add your routes here
-  get "/" do
-    { message: "You're on the home page!" }.to_json
-  end
 
   get "/gardeners" do
     gardeners = Gardener.all
     gardeners.to_json(include: {
-      gardens: { only: [:name, :id] }
+      gardens: { include: [:plants, :gardener] }
     })
   end
 
@@ -41,11 +38,6 @@ class ApplicationController < Sinatra::Base
     gardener.to_json
   end
 
-  get "/gardens" do
-    gardens = Garden.all
-    gardens.to_json(include: [:gardener, :plants])
-  end
-
   post '/gardens' do
     garden = Garden.create(
       name: params[:name],
@@ -75,16 +67,8 @@ class ApplicationController < Sinatra::Base
 
   delete '/gardens/:id' do
     garden = Garden.find(params[:id])
-    for i in garden.plants do
-      i.destroy
-    end
     garden.destroy
     garden.to_json
-  end
-
-  get "/plants" do
-    plants = Plant.all
-    plants.to_json
   end
 
   delete '/plants/:id' do
