@@ -35,7 +35,9 @@ class ApplicationController < Sinatra::Base
     gardener = Gardener.create(
       name: params[:name]
     )
-    gardener.to_json
+    gardener.to_json(include: {
+      gardens: { include: [:plants, :gardener] }
+    })
   end
 
   post '/gardens' do
